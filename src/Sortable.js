@@ -392,6 +392,8 @@ function Sortable(el, options) {
 		fallbackOnBody: false,
 		fallbackTolerance: 0,
 		fallbackOffset: {x: 0, y: 0},
+		fallbackOverridedScaleX: 0,
+		fallbackOverridedScaleY: 0,
 		supportPointer: Sortable.supportPointer !== false && ('PointerEvent' in window) && !Safari,
 		emptyInsertThreshold: 5
 	};
@@ -795,8 +797,8 @@ Sortable.prototype = /** @lends Sortable.prototype */ {
 				fallbackOffset = options.fallbackOffset,
 				touch = evt.touches ? evt.touches[0] : evt,
 				ghostMatrix = ghostEl && matrix(ghostEl, true),
-				scaleX = ghostEl && ghostMatrix && ghostMatrix.a,
-				scaleY = ghostEl && ghostMatrix && ghostMatrix.d,
+				scaleX = this.options.fallbackOverridedScaleX || ghostEl && ghostMatrix && ghostMatrix.a,
+				scaleY = this.options.fallbackOverridedScaleY || ghostEl && ghostMatrix && ghostMatrix.d,
 				relativeScrollOffset = PositionGhostAbsolutely && ghostRelativeParent && getRelativeScrollOffset(ghostRelativeParent),
 				dx = ((touch.clientX - tapEvt.clientX)
 						+ fallbackOffset.x) / (scaleX || 1)
